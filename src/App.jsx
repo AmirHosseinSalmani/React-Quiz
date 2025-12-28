@@ -6,6 +6,7 @@ import Error from "./Error";
 import Startscreen from "./Startscreen";
 import Question from "./Question";
 import FinishScreen from "./FinishScreen";
+import { Questions } from "../Data/Questions";
 const initialState = {
   questions: [],
   // loding  , error , ready , active , finished , tick
@@ -104,10 +105,11 @@ export default function App() {
     dispatch({ type: "restart" });
   }
   useEffect(function () {
-    fetch("http://localhost:8000/questions")
-      .then((res) => res.json())
-      .then((data) => dispatch({ type: "dataReceived", payload: data }))
-      .catch((err) => dispatch({ type: "dataFailed", payload: err }));
+    try {
+      dispatch({ type: "dataReceived", payload: Questions });
+    } catch (err) {
+      dispatch({ type: "dataFailed", payload: err });
+    }
   }, []);
   useEffect(
     function () {
